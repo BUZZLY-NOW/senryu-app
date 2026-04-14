@@ -2,198 +2,191 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>ひとくち文芸 〜川柳と独楽吟〜</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>ひとくち文芸</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;background:#e0e0e0;font-family:'Noto Sans JP',sans-serif;}
-#app{max-width:480px;margin:0 auto;display:flex;flex-direction:column;height:100dvh;background:#B2D480;}
+html{font-size:16px;}
+body{height:100%;background:#e0e0e0;font-family:'Noto Sans JP',sans-serif;-webkit-text-size-adjust:100%;}
+#app{max-width:480px;margin:0 auto;display:flex;flex-direction:column;height:100dvh;height:100vh;background:#B2D480;}
 
-/* トップバー */
-#topbar{background:#4CAF50;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,0.15);}
-.top-av{width:38px;height:38px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.top-name{font-size:15px;font-weight:500;color:#fff;}
-.top-sub{font-size:11px;color:rgba(255,255,255,0.8);}
+/* ===== フォントサイズ変数 ===== */
+/* small=デフォルト medium=中 large=大 */
+.fs-small{--fs-base:14px;--fs-msg:14px;--fs-haiku:14px;--fs-btn:13px;--fs-hint:11px;--fs-label:11px;--fs-topic:20px;}
+.fs-medium{--fs-base:16px;--fs-msg:16px;--fs-haiku:17px;--fs-btn:15px;--fs-hint:13px;--fs-label:13px;--fs-topic:24px;}
+.fs-large{--fs-base:19px;--fs-msg:19px;--fs-haiku:21px;--fs-btn:18px;--fs-hint:16px;--fs-label:16px;--fs-topic:28px;}
+
+#topbar{background:#4CAF50;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,0.15);}
+.top-av{width:40px;height:40px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.top-name{font-size:16px;font-weight:500;color:#fff;}
+.top-sub{font-size:11px;color:rgba(255,255,255,0.85);}
 .top-right{margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
-.top-user{font-size:10px;color:#fff;font-weight:500;}
-.top-badge{font-size:9px;background:rgba(255,255,255,0.2);color:#fff;padding:1px 7px;border-radius:20px;cursor:pointer;}
-.top-badge:hover{background:rgba(255,255,255,0.35);}
+.top-user{font-size:12px;color:#fff;font-weight:500;}
+.top-controls{display:flex;gap:5px;align-items:center;}
+.top-badge{font-size:11px;background:rgba(255,255,255,0.2);color:#fff;padding:2px 8px;border-radius:20px;cursor:pointer;}
+.fs-btn-group{display:flex;gap:2px;}
+.fs-toggle{font-size:10px;background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:10px;padding:2px 6px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;}
+.fs-toggle.on{background:rgba(255,255,255,0.45);font-weight:500;}
 
-/* フェーズバー */
 #phase-bar{background:rgba(0,0,0,0.15);display:flex;flex-shrink:0;}
-.ph{flex:1;text-align:center;font-size:9px;padding:4px 1px;color:rgba(255,255,255,0.6);border-bottom:2px solid transparent;transition:all .2s;}
+.ph{flex:1;text-align:center;font-size:var(--fs-label,11px);padding:5px 1px;color:rgba(255,255,255,0.6);border-bottom:2px solid transparent;transition:all .2s;}
 .ph.on{color:#fff;border-bottom-color:#fff;font-weight:500;}
 
-/* チャット */
-#chat{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:8px;}
+#chat{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:8px;-webkit-overflow-scrolling:touch;}
 
-/* メッセージ */
-.row{display:flex;align-items:flex-end;gap:6px;}
+.row{display:flex;align-items:flex-end;gap:7px;}
 .row.me{flex-direction:row-reverse;}
-.av-s{width:30px;height:30px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
-.name-lbl{font-size:10px;color:rgba(0,0,0,0.5);margin-bottom:2px;}
-.bub{max-width:76%;padding:9px 12px;font-size:13px;line-height:1.65;word-break:break-all;border-radius:14px;}
+.av-s{width:34px;height:34px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.name-lbl{font-size:var(--fs-label,11px);color:rgba(0,0,0,0.5);margin-bottom:3px;}
+.bub{max-width:78%;padding:10px 13px;font-size:var(--fs-msg,14px);line-height:1.7;word-break:break-all;border-radius:16px;}
 .bot .bub{background:#fff;color:#222;border-bottom-left-radius:3px;}
 .me .bub{background:#5FCE5A;color:#fff;border-bottom-right-radius:3px;}
 .ts{font-size:10px;color:rgba(0,0,0,0.4);white-space:nowrap;}
 
-/* トピックカード */
-.topic-card{background:#FFF9E6;border-left:3px solid #F5A623;border-radius:8px;padding:8px 11px;margin-top:4px;}
-.topic-title{font-size:10px;color:#B07A1A;font-weight:500;margin-bottom:2px;}
-.topic-word{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:700;color:#333;letter-spacing:.1em;}
-.topic-sub{font-size:11px;color:#888;margin-top:2px;}
+.topic-card{background:#FFF9E6;border-left:4px solid #F5A623;border-radius:10px;padding:10px 13px;margin-top:5px;}
+.topic-title{font-size:var(--fs-label,11px);color:#B07A1A;font-weight:500;margin-bottom:3px;}
+.topic-word{font-family:'Noto Serif JP',serif;font-size:var(--fs-topic,20px);font-weight:700;color:#333;letter-spacing:.1em;}
+.topic-sub{font-size:var(--fs-label,11px);color:#888;margin-top:3px;}
 
-/* 独楽吟説明カード */
-.dokurakugin-card{background:#FFF3E0;border-left:3px solid #795548;border-radius:8px;padding:10px 12px;margin-top:4px;}
-.dokurakugin-title{font-size:11px;font-weight:500;color:#4E342E;margin-bottom:6px;display:flex;align-items:center;gap:5px;}
-.dokurakugin-body{font-size:11px;color:#5D4037;line-height:1.7;}
-.dokurakugin-example{font-family:'Noto Serif JP',serif;font-size:12px;background:#fff;border-radius:6px;padding:7px 9px;margin-top:6px;color:#3E2723;line-height:2;}
-.dokurakugin-format{font-size:10px;color:#795548;margin-top:5px;padding:5px 7px;background:rgba(121,85,72,0.1);border-radius:5px;}
+.dokurakugin-card{background:#FFF3E0;border-left:4px solid #795548;border-radius:10px;padding:12px 13px;margin-top:5px;}
+.dokurakugin-title{font-size:var(--fs-base,14px);font-weight:500;color:#4E342E;margin-bottom:6px;}
+.dokurakugin-body{font-size:var(--fs-base,14px);color:#5D4037;line-height:1.75;}
+.dokurakugin-example{font-family:'Noto Serif JP',serif;font-size:var(--fs-haiku,14px);background:#fff;border-radius:8px;padding:8px 11px;margin-top:7px;color:#3E2723;line-height:2.2;}
+.dokurakugin-format{font-size:var(--fs-label,11px);color:#795548;margin-top:6px;padding:7px 9px;background:rgba(121,85,72,0.1);border-radius:6px;line-height:1.7;}
 
-/* 選択ボタン */
-.choice-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;}
-.choice-btn{padding:7px 14px;border-radius:20px;border:none;font-size:12px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;background:#4CAF50;color:#fff;transition:opacity .15s;}
-.choice-btn:hover{opacity:.85;}
-.choice-btn.age{background:#fff;color:#4CAF50;border:1.5px solid #4CAF50;}
-.choice-btn.mode-s{background:#1D9E75;color:#fff;}
-.choice-btn.mode-d{background:#795548;color:#fff;}
+.choice-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;}
+.choice-btn{padding:9px 16px;border-radius:24px;border:none;font-size:var(--fs-btn,13px);font-family:'Noto Sans JP',sans-serif;cursor:pointer;background:#4CAF50;color:#fff;-webkit-tap-highlight-color:transparent;}
+.choice-btn.age{background:#fff;color:#4CAF50;border:2px solid #4CAF50;}
+.choice-btn.mode-s{background:#1D9E75;}
+.choice-btn.mode-d{background:#795548;}
 
-/* モード切替バー（入力エリア上部） */
-#mode-switch-bar{display:flex;gap:4px;padding:5px 10px 0;background:#fff;flex-shrink:0;}
-.msw-btn{flex:1;font-size:11px;text-align:center;padding:5px 4px;border-radius:20px;border:1px solid #ddd;color:#888;background:#f5f5f5;cursor:pointer;transition:all .2s;font-family:'Noto Sans JP',sans-serif;}
+#mode-switch-bar{display:flex;gap:5px;padding:6px 10px 0;background:#fff;flex-shrink:0;}
+.msw-btn{flex:1;font-size:var(--fs-btn,13px);text-align:center;padding:7px 4px;border-radius:24px;border:1.5px solid #ddd;color:#888;background:#f5f5f5;cursor:pointer;font-family:'Noto Sans JP',sans-serif;-webkit-tap-highlight-color:transparent;}
 .msw-btn.on-s{background:#1D9E75;color:#fff;border-color:#1D9E75;font-weight:500;}
 .msw-btn.on-d{background:#795548;color:#fff;border-color:#795548;font-weight:500;}
 
-/* マッチング */
-.matching-card{background:#fff;border-radius:10px;border:0.5px solid #ddd;padding:12px;margin-top:4px;text-align:center;}
-.matching-title{font-size:12px;font-weight:500;color:#333;margin-bottom:8px;}
-.matching-dots{display:flex;justify-content:center;gap:5px;margin-bottom:8px;}
-.mdot{width:8px;height:8px;border-radius:50%;background:#4CAF50;animation:mpulse 1.4s infinite;}
+.matching-card{background:#fff;border-radius:12px;border:0.5px solid #ddd;padding:14px;margin-top:5px;text-align:center;}
+.matching-title{font-size:var(--fs-base,14px);font-weight:500;color:#333;margin-bottom:9px;}
+.matching-dots{display:flex;justify-content:center;gap:6px;margin-bottom:9px;}
+.mdot{width:10px;height:10px;border-radius:50%;background:#4CAF50;animation:mpulse 1.4s infinite;}
 .mdot:nth-child(2){animation-delay:.2s;}
 .mdot:nth-child(3){animation-delay:.4s;}
 @keyframes mpulse{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
-.matching-timer{font-size:11px;color:#888;}
-.matching-members{display:flex;justify-content:center;gap:6px;margin-top:8px;flex-wrap:wrap;}
-.member-chip{font-size:10px;padding:3px 9px;border-radius:20px;background:#E1F5EE;color:#085041;}
+.matching-timer{font-size:var(--fs-label,11px);color:#888;}
+.matching-members{display:flex;justify-content:center;gap:7px;margin-top:9px;flex-wrap:wrap;}
+.member-chip{font-size:var(--fs-label,11px);padding:4px 11px;border-radius:24px;background:#E1F5EE;color:#085041;}
 
-/* 評価方法選択 */
-.eval-choice-card{background:#fff;border-radius:10px;border:0.5px solid #ddd;padding:12px;margin-top:4px;}
-.eval-choice-title{font-size:12px;font-weight:500;color:#333;margin-bottom:8px;text-align:center;}
-.eval-choice-row{display:flex;gap:8px;}
-.eval-btn{
-  flex:1;border-radius:10px;border:1.5px solid #ddd;
-  padding:10px 6px;cursor:pointer;text-align:center;
-  background:#fff;transition:all .2s;font-family:'Noto Sans JP',sans-serif;
-}
-.eval-btn:hover{border-color:#4CAF50;background:#F1F8E9;}
+.eval-choice-card{background:#fff;border-radius:12px;border:0.5px solid #ddd;padding:13px;margin-top:5px;}
+.eval-choice-title{font-size:var(--fs-base,14px);font-weight:500;color:#333;margin-bottom:9px;text-align:center;}
+.eval-choice-row{display:flex;gap:9px;}
+.eval-btn{flex:1;border-radius:12px;border:2px solid #ddd;padding:13px 7px;cursor:pointer;text-align:center;background:#fff;transition:all .2s;font-family:'Noto Sans JP',sans-serif;-webkit-tap-highlight-color:transparent;}
 .eval-btn.selected{border-color:#4CAF50;background:#E8F5E9;}
-.eval-btn-icon{font-size:20px;margin-bottom:4px;}
-.eval-btn-label{font-size:11px;font-weight:500;color:#333;}
-.eval-btn-desc{font-size:9px;color:#888;margin-top:2px;line-height:1.4;}
+.eval-btn-icon{font-size:24px;margin-bottom:5px;}
+.eval-btn-label{font-size:var(--fs-base,14px);font-weight:500;color:#333;}
+.eval-btn-desc{font-size:var(--fs-label,11px);color:#888;margin-top:3px;line-height:1.5;}
 
-/* 四択 */
-.four-wrap{display:flex;flex-direction:column;gap:5px;margin-top:5px;}
-.entry-card{background:#fff;border-radius:12px;border:2.5px solid transparent;padding:10px 12px;cursor:pointer;transition:all .18s;position:relative;}
-.entry-card:active{transform:scale(.98);}
-.entry-label{font-size:9px;color:#888;margin-bottom:3px;}
-.entry-haiku{font-family:'Noto Serif JP',serif;font-size:13px;line-height:2;color:#333;text-align:center;}
+.four-wrap{display:flex;flex-direction:column;gap:6px;margin-top:6px;}
+.entry-card{background:#fff;border-radius:14px;border:3px solid transparent;padding:11px 13px;cursor:pointer;transition:all .18s;position:relative;-webkit-tap-highlight-color:transparent;}
+.entry-card:active{transform:scale(.97);}
+.entry-label{font-size:var(--fs-label,11px);color:#888;margin-bottom:3px;}
+.entry-haiku{font-family:'Noto Serif JP',serif;font-size:var(--fs-haiku,14px);line-height:2.2;color:#333;text-align:center;}
 .entry-card.voted-best{border-color:#4CAF50;background:#F1F8E9;}
 .entry-card.reveal-ai{border-color:#7B1FA2;background:#F3E5F5;}
 .entry-card.reveal-human{border-color:#1565C0;background:#E3F2FD;}
-.entry-badge{position:absolute;top:8px;right:10px;font-size:9px;padding:2px 8px;border-radius:20px;font-weight:500;}
-.vote-hint{text-align:center;font-size:11px;color:rgba(255,255,255,0.9);background:rgba(0,0,0,0.15);border-radius:8px;padding:6px;margin-top:4px;}
+.entry-badge{position:absolute;top:9px;right:11px;font-size:var(--fs-label,11px);padding:3px 9px;border-radius:24px;font-weight:500;}
+.vote-hint{text-align:center;font-size:var(--fs-base,14px);color:rgba(255,255,255,0.95);background:rgba(0,0,0,0.18);border-radius:10px;padding:8px;margin-top:5px;}
 
-/* 人間評価待ち */
-.human-eval-card{background:#E3F2FD;border-radius:10px;border:0.5px solid #90CAF9;padding:11px 12px;margin-top:5px;}
-.human-eval-title{font-size:12px;font-weight:500;color:#0D47A1;margin-bottom:5px;}
-.human-eval-body{font-size:11px;color:#1565C0;line-height:1.6;}
-.human-eval-count{font-size:22px;font-weight:500;color:#1565C0;text-align:center;margin:8px 0 3px;}
-.human-eval-sub{font-size:10px;color:#42A5F5;text-align:center;}
+.result-card{background:#E8F5E9;border-radius:12px;border:0.5px solid #81C784;padding:11px 13px;margin-top:6px;}
+.result-title{font-size:var(--fs-label,11px);color:#2E7D32;font-weight:500;margin-bottom:8px;}
+.result-row{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
+.result-name{font-size:var(--fs-label,11px);width:58px;flex-shrink:0;color:#333;line-height:1.4;}
+.result-bar-bg{flex:1;height:11px;background:#C8E6C9;border-radius:6px;overflow:hidden;}
+.result-bar-fill{height:100%;background:#4CAF50;border-radius:6px;transition:width .8s;}
+.result-pct{font-size:var(--fs-label,11px);color:#388E3C;width:30px;text-align:right;}
+.winner-badge{display:inline-block;padding:5px 13px;border-radius:24px;background:#4CAF50;color:#fff;font-size:var(--fs-label,11px);font-weight:500;margin-top:6px;}
+.ai-reveal{margin-top:9px;padding:8px;border-radius:10px;background:#F3E5F5;border:0.5px solid #CE93D8;font-size:var(--fs-base,14px);color:#4A148C;text-align:center;}
 
-/* 結果 */
-.result-card{background:#E8F5E9;border-radius:10px;border:0.5px solid #81C784;padding:10px 12px;margin-top:5px;}
-.result-title{font-size:11px;color:#2E7D32;font-weight:500;margin-bottom:7px;}
-.result-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
-.result-name{font-size:10px;width:56px;flex-shrink:0;color:#333;line-height:1.3;}
-.result-bar-bg{flex:1;height:9px;background:#C8E6C9;border-radius:5px;overflow:hidden;}
-.result-bar-fill{height:100%;background:#4CAF50;border-radius:5px;transition:width .8s;}
-.result-pct{font-size:10px;color:#388E3C;width:28px;text-align:right;}
-.winner-badge{display:inline-block;padding:3px 10px;border-radius:20px;background:#4CAF50;color:#fff;font-size:10px;font-weight:500;margin-top:5px;}
-.ai-reveal{margin-top:8px;padding:7px;border-radius:8px;background:#F3E5F5;border:0.5px solid #CE93D8;font-size:10px;color:#4A148C;text-align:center;}
+.human-eval-card{background:#E3F2FD;border-radius:12px;border:0.5px solid #90CAF9;padding:12px 13px;margin-top:6px;}
+.human-eval-title{font-size:var(--fs-base,14px);font-weight:500;color:#0D47A1;margin-bottom:6px;}
+.human-eval-count{font-size:28px;font-weight:500;color:#1565C0;text-align:center;margin:9px 0 3px;}
+.human-eval-body{font-size:var(--fs-base,14px);color:#1565C0;line-height:1.7;}
 
-/* 添削 */
-.correction-wrap{margin-top:6px;}
-.correction-header{font-size:11px;font-weight:500;color:#fff;background:#795548;border-radius:8px 8px 0 0;padding:7px 10px;}
-.correction-body{background:#fff;border-radius:0 0 10px 10px;border:0.5px solid #BCAAA4;padding:10px;}
-.correction-badge{display:inline-block;font-size:9px;font-weight:500;padding:2px 8px;border-radius:20px;margin-bottom:8px;}
-.correction-orig{font-family:'Noto Serif JP',serif;font-size:13px;line-height:2;text-align:center;color:#777;padding:6px;background:#f9f9f9;border-radius:6px;}
-.correction-arrow{text-align:center;font-size:12px;color:#4CAF50;margin:5px 0;}
-.correction-revised{font-family:'Noto Serif JP',serif;font-size:14px;line-height:2;text-align:center;padding:8px;background:#E1F5EE;border-radius:6px;color:#1B5E20;font-weight:500;}
-.correction-point{display:flex;align-items:flex-start;gap:5px;margin-bottom:4px;font-size:11px;line-height:1.6;}
-.correction-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
-.correction-reason{font-size:11px;color:#555;line-height:1.7;padding:6px 8px;background:#FFF9E6;border-radius:6px;border-left:3px solid #F5A623;margin-top:5px;}
-.correction-react{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;}
-.react-btn{font-size:10px;padding:5px 10px;border-radius:20px;border:0.5px solid #ddd;color:#555;background:#f5f5f5;cursor:pointer;transition:all .15s;}
-.react-btn:hover{background:#E1F5EE;color:#0F6E56;border-color:#5DCAA5;}
+.correction-wrap{margin-top:7px;}
+.correction-header{font-size:var(--fs-base,14px);font-weight:500;color:#fff;background:#795548;border-radius:10px 10px 0 0;padding:8px 12px;}
+.correction-body{background:#fff;border-radius:0 0 12px 12px;border:0.5px solid #BCAAA4;padding:11px;}
+.correction-badge{display:inline-block;font-size:var(--fs-label,11px);font-weight:500;padding:3px 9px;border-radius:24px;margin-bottom:9px;}
+.correction-orig{font-family:'Noto Serif JP',serif;font-size:var(--fs-haiku,14px);line-height:2.2;text-align:center;color:#777;padding:7px;background:#f9f9f9;border-radius:8px;}
+.correction-arrow{text-align:center;font-size:var(--fs-base,14px);color:#4CAF50;margin:6px 0;}
+.correction-revised{font-family:'Noto Serif JP',serif;font-size:var(--fs-haiku,14px);line-height:2.2;text-align:center;padding:9px;background:#E1F5EE;border-radius:8px;color:#1B5E20;font-weight:500;}
+.correction-point{display:flex;align-items:flex-start;gap:6px;margin-bottom:5px;font-size:var(--fs-base,14px);line-height:1.7;}
+.correction-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px;}
+.correction-reason{font-size:var(--fs-base,14px);color:#555;line-height:1.75;padding:8px 10px;background:#FFF9E6;border-radius:8px;border-left:4px solid #F5A623;margin-top:6px;}
+.correction-react{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap;}
+.react-btn{font-size:var(--fs-btn,13px);padding:8px 13px;border-radius:24px;border:0.5px solid #ddd;color:#555;background:#f5f5f5;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .react-btn.primary{background:#4CAF50;color:#fff;border-color:#4CAF50;}
 
-/* 添削なし案内 */
-.no-correction-card{background:#FFF9E6;border-radius:10px;border:0.5px solid #EF9F27;padding:10px 12px;margin-top:5px;}
-.no-correction-title{font-size:11px;font-weight:500;color:#854F0B;margin-bottom:5px;}
-.no-correction-body{font-size:11px;color:#633806;line-height:1.65;}
-.upgrade-btn{display:inline-block;margin-top:7px;padding:5px 14px;border-radius:20px;background:#854F0B;color:#fff;border:none;font-size:11px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;}
+.no-correction-card{background:#FFF9E6;border-radius:12px;border:0.5px solid #EF9F27;padding:11px 13px;margin-top:6px;}
+.no-correction-title{font-size:var(--fs-base,14px);font-weight:500;color:#854F0B;margin-bottom:6px;}
+.no-correction-body{font-size:var(--fs-base,14px);color:#633806;line-height:1.75;}
+.upgrade-btn{display:inline-block;margin-top:8px;padding:8px 17px;border-radius:24px;background:#854F0B;color:#fff;border:none;font-size:var(--fs-btn,13px);font-family:'Noto Sans JP',sans-serif;cursor:pointer;}
 
-/* コメント・返信 */
-.comment-box{background:#FFFDE7;border-radius:10px;border:0.5px solid #F9A825;padding:9px 11px;margin-top:5px;}
-.comment-label{font-size:11px;color:#F57F17;font-weight:500;margin-bottom:5px;}
-.comment-area{width:100%;border:0.5px solid #ddd;border-radius:8px;padding:7px 10px;font-size:12px;font-family:'Noto Sans JP',sans-serif;resize:none;height:52px;background:#fff;color:#333;outline:none;}
-.comment-area:focus{border-color:#F9A825;}
-.comment-send{margin-top:5px;padding:5px 14px;border-radius:20px;border:none;background:#F57F17;color:#fff;font-size:12px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;}
-.reply-card{background:#E3F2FD;border-radius:10px;border:0.5px solid #90CAF9;padding:9px 11px;margin-top:5px;}
-.reply-title{font-size:10px;color:#1565C0;font-weight:500;margin-bottom:3px;}
-.reply-msg{font-size:12px;color:#1A237E;font-style:italic;line-height:1.7;}
+.comment-box{background:#FFFDE7;border-radius:12px;border:0.5px solid #F9A825;padding:10px 12px;margin-top:6px;}
+.comment-label{font-size:var(--fs-base,14px);color:#F57F17;font-weight:500;margin-bottom:6px;}
+.comment-area{width:100%;border:0.5px solid #ddd;border-radius:10px;padding:9px 12px;font-size:var(--fs-base,14px);font-family:'Noto Sans JP',sans-serif;resize:none;height:60px;background:#fff;color:#333;outline:none;}
+.comment-send{margin-top:6px;padding:8px 17px;border-radius:24px;border:none;background:#F57F17;color:#fff;font-size:var(--fs-btn,13px);font-family:'Noto Sans JP',sans-serif;cursor:pointer;}
+.reply-card{background:#E3F2FD;border-radius:12px;border:0.5px solid #90CAF9;padding:10px 12px;margin-top:6px;}
+.reply-title{font-size:var(--fs-label,11px);color:#1565C0;font-weight:500;margin-bottom:4px;}
+.reply-msg{font-size:var(--fs-base,14px);color:#1A237E;font-style:italic;line-height:1.75;}
 
-/* 区切り */
-.divider{text-align:center;font-size:11px;color:rgba(0,0,0,0.35);display:flex;align-items:center;gap:6px;margin:2px 0;}
-.divider::before,.divider::after{content:'';flex:1;height:0.5px;background:rgba(0,0,0,0.15);}
+.divider{text-align:center;font-size:var(--fs-label,11px);color:rgba(0,0,0,0.38);display:flex;align-items:center;gap:7px;margin:3px 0;}
+.divider::before,.divider::after{content:'';flex:1;height:0.5px;background:rgba(0,0,0,0.18);}
 
-/* タイピング */
-.typing-d{display:flex;gap:4px;padding:2px 0;}
-.dot{width:7px;height:7px;border-radius:50%;background:#aaa;animation:bonce 1.2s infinite;}
+.typing-d{display:flex;gap:5px;padding:2px 0;}
+.dot{width:8px;height:8px;border-radius:50%;background:#aaa;animation:bonce 1.2s infinite;}
 .dot:nth-child(2){animation-delay:.2s;}
 .dot:nth-child(3){animation-delay:.4s;}
-@keyframes bonce{0%,80%,100%{transform:translateY(0);opacity:.4;}40%{transform:translateY(-5px);opacity:1;}}
+@keyframes bonce{0%,80%,100%{transform:translateY(0);opacity:.4;}40%{transform:translateY(-6px);opacity:1;}}
 
-/* 入力エリア */
-#inputarea{background:#fff;border-top:0.5px solid #ddd;padding:6px 10px 8px;flex-shrink:0;}
-#hint{font-size:10px;color:#888;text-align:center;margin-bottom:5px;}
-#irow{display:flex;gap:6px;align-items:flex-end;}
-#ibox{flex:1;border:0.5px solid #ddd;border-radius:20px;padding:8px 14px;font-size:13px;font-family:'Noto Sans JP',sans-serif;resize:none;height:38px;background:#f5f5f5;color:#333;outline:none;transition:border-color .15s;}
+#inputarea{background:#fff;border-top:0.5px solid #ddd;padding:7px 11px 10px;flex-shrink:0;}
+#hint{font-size:var(--fs-hint,11px);color:#888;text-align:center;margin-bottom:6px;}
+#irow{display:flex;gap:7px;align-items:flex-end;}
+#ibox{flex:1;border:1px solid #ddd;border-radius:24px;padding:9px 15px;font-size:var(--fs-msg,14px);font-family:'Noto Sans JP',sans-serif;resize:none;height:44px;background:#f5f5f5;color:#333;outline:none;}
 #ibox:focus{border-color:#4CAF50;}
-#sbtn{width:38px;height:38px;border-radius:50%;border:none;background:#4CAF50;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-#sbtn:hover{opacity:.85;}
-#sbtn:disabled{opacity:.35;cursor:default;}
+#sbtn{width:44px;height:44px;border-radius:50%;border:none;background:#4CAF50;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+#sbtn:disabled{opacity:.35;}
 
-/* 汎用 */
-.nbtn{display:inline-block;margin-top:8px;padding:7px 16px;background:#4CAF50;color:#fff;border:none;border-radius:20px;font-size:12px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;}
-.nbtn:hover{opacity:.85;}
+.nbtn{display:inline-block;margin-top:9px;padding:9px 19px;background:#4CAF50;color:#fff;border:none;border-radius:24px;font-size:var(--fs-btn,13px);cursor:pointer;font-family:'Noto Sans JP',sans-serif;-webkit-tap-highlight-color:transparent;}
 
-/* ボトムナビ */
+/* マイページ */
+.mypage{padding:14px 12px;display:flex;flex-direction:column;gap:10px;}
+.mypage-header{font-size:var(--fs-base,14px);font-weight:500;color:#333;border-bottom:1px solid #ddd;padding-bottom:8px;margin-bottom:4px;}
+.mypage-card{background:#fff;border-radius:12px;padding:11px 13px;border:0.5px solid #ddd;}
+.mypage-haiku{font-family:'Noto Serif JP',serif;font-size:var(--fs-haiku,14px);line-height:2;color:#333;margin-bottom:5px;}
+.mypage-meta{font-size:var(--fs-label,11px);color:#888;display:flex;gap:10px;}
+.mypage-empty{text-align:center;color:#888;font-size:var(--fs-base,14px);padding:30px 0;}
+
 #bottomnav{display:flex;background:#fff;border-top:0.5px solid #ddd;flex-shrink:0;}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:6px 2px;font-size:8px;color:#888;gap:2px;cursor:pointer;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:7px 2px;font-size:var(--fs-label,11px);color:#888;gap:2px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .nav-item.on{color:#4CAF50;font-weight:500;}
-.nav-icon{font-size:18px;}
+.nav-icon{font-size:22px;}
 </style>
 </head>
 <body>
-<div id="app">
+<div id="app" class="fs-medium">
   <div id="topbar">
     <div class="top-av">🌸</div>
     <div><div class="top-name">ひとくち文芸</div><div class="top-sub">川柳と独楽吟 〜福井発〜</div></div>
     <div class="top-right">
       <div class="top-user" id="top-username">ゲスト</div>
-      <div class="top-badge" id="top-badge" onclick="toggleMode()">川柳</div>
+      <div class="top-controls">
+        <div class="top-badge" id="top-badge" onclick="toggleMode()">川柳</div>
+        <div class="fs-btn-group">
+          <button class="fs-toggle" onclick="setFS('small')">小</button>
+          <button class="fs-toggle on" id="fs-m" onclick="setFS('medium')">中</button>
+          <button class="fs-toggle" onclick="setFS('large')">大</button>
+        </div>
+      </div>
     </div>
   </div>
   <div id="phase-bar">
@@ -216,16 +209,20 @@ html,body{height:100%;background:#e0e0e0;font-family:'Noto Sans JP',sans-serif;}
     </div>
   </div>
   <div id="bottomnav">
-    <div class="nav-item on"><span class="nav-icon">🏠</span>ホーム</div>
-    <div class="nav-item"><span class="nav-icon">⚔️</span>対決</div>
-    <div class="nav-item"><span class="nav-icon">✏️</span>添削</div>
-    <div class="nav-item"><span class="nav-icon">👤</span>マイページ</div>
+    <div class="nav-item on" id="nav-home" onclick="showHome()"><span class="nav-icon">🏠</span>ホーム</div>
+    <div class="nav-item" id="nav-battle" onclick="showHome()"><span class="nav-icon">⚔️</span>対決</div>
+    <div class="nav-item" id="nav-correction" onclick="showHome()"><span class="nav-icon">✏️</span>添削</div>
+    <div class="nav-item" id="nav-mypage" onclick="showMypage()"><span class="nav-icon">👤</span>マイページ</div>
   </div>
 </div>
 
 <script>
-// ===== 設定 =====
-// ⚠️ 本番はCloudflare WorkersでAPIキーを管理してください
+// ===================================================
+// ===== 設定（ここを変えるだけで仕様変更できます） =====
+// ===================================================
+const WORKER_URL = 'https://senryu-api2.itoshige.workers.dev'; // CloudflareのWorker URL
+const MAX_MYPAGE_RECORDS = 50; // マイページの最大保存数
+
 const TOPICS = [
   {w:'春',d:'新しい始まり、桜、別れと出会い'},
   {w:'AI',d:'テクノロジー、未来、人間との関係'},
@@ -245,8 +242,13 @@ const DUMMY_USERS = [
   {name:'詠み人',age:'20代'},{name:'風雅',age:'70代以上'},
 ];
 
-// プラン定義
-const PLANS = {free:'無料',standard:'100円',premium:'300円'};
+// コスト説明（仕様変更時の参考）
+// Haiku：約0.1円/回（ボット句生成・コメント返信）
+// Sonnet：約0.5円/回（添削生成）
+// 無料プラン：約0.15円/回
+// 有料プラン（添削あり）：約0.65円/回
+// ===================================================
+
 const AWARDS = ['🏅 惜しい句賞','💡 個性賞','🔥 挑戦賞'];
 const REPLY_POOL = [
   '読んでじんわりしました。情景がすっと浮かびます。',
@@ -259,15 +261,16 @@ const REPLY_POOL = [
 // ===== 状態 =====
 let userName = '';
 let userAge = '';
-let userPlan = 'free'; // free / standard / premium
+let userPlan = 'free';
 let currentMode = 'senryu';
 let topic = null;
 let userS = null;
 let entries = [];
 let aiIdx = null;
 let voted = false;
-let evalMode = 'ai'; // ai / human
+let evalMode = 'ai';
 let step = 'name';
+let currentView = 'home';
 
 // ===== DOM =====
 const chat = document.getElementById('chat');
@@ -275,61 +278,161 @@ const ibox = document.getElementById('ibox');
 const sbtn = document.getElementById('sbtn');
 const hint = document.getElementById('hint');
 const modeSwitchBar = document.getElementById('mode-switch-bar');
+const app = document.getElementById('app');
+
+// ===== フォントサイズ切替 =====
+window.setFS = function(size) {
+  app.classList.remove('fs-small','fs-medium','fs-large');
+  app.classList.add('fs-'+size);
+  ['small','medium','large'].forEach(s => {
+    const btn = document.querySelector(`.fs-toggle[onclick="setFS('${s}')"]`);
+    if(btn) btn.classList.toggle('on', s===size);
+  });
+  localStorage.setItem('fs', size);
+};
+
+// ===== ローカルストレージ =====
+function saveUser() {
+  localStorage.setItem('userName', userName);
+  localStorage.setItem('userAge', userAge);
+  localStorage.setItem('userPlan', userPlan);
+}
+function loadUser() {
+  userName = localStorage.getItem('userName') || '';
+  userAge = localStorage.getItem('userAge') || '';
+  userPlan = localStorage.getItem('userPlan') || 'free';
+}
+function saveRecord(senryu, topicWord, mode) {
+  const records = JSON.parse(localStorage.getItem('myRecords') || '[]');
+  records.unshift({
+    senryu, topic: topicWord, mode,
+    date: new Date().toLocaleDateString('ja-JP')
+  });
+  if(records.length > MAX_MYPAGE_RECORDS) records.pop();
+  localStorage.setItem('myRecords', JSON.stringify(records));
+}
+function loadRecords() {
+  return JSON.parse(localStorage.getItem('myRecords') || '[]');
+}
+
+// ===== マイページ表示 =====
+window.showMypage = function() {
+  currentView = 'mypage';
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));
+  document.getElementById('nav-mypage').classList.add('on');
+  modeSwitchBar.style.display = 'none';
+  hint.textContent = 'マイページ';
+  ibox.disabled = true; sbtn.disabled = true;
+
+  chat.innerHTML = '';
+  const records = loadRecords();
+  const wrap = document.createElement('div');
+  wrap.className = 'mypage';
+
+  const header = document.createElement('div');
+  header.className = 'mypage-header';
+  header.textContent = `📖 ${userName}さんのマイ句帖（${records.length}句）`;
+  wrap.appendChild(header);
+
+  if(records.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'mypage-empty';
+    empty.textContent = 'まだ句がありません。ホームで詠んでみましょう！';
+    wrap.appendChild(empty);
+  } else {
+    records.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'mypage-card';
+      card.innerHTML = `<div class="mypage-haiku">${r.senryu.replace(/\n/g,'<br>')}</div>
+        <div class="mypage-meta">
+          <span>📅 ${r.date}</span>
+          <span>🏷 ${r.topic}</span>
+          <span>${r.mode==='senryu'?'川柳':'独楽吟'}</span>
+        </div>`;
+      wrap.appendChild(card);
+    });
+  }
+
+  // プラン表示
+  const planCard = document.createElement('div');
+  planCard.className = 'mypage-card';
+  planCard.innerHTML = `<div style="font-size:var(--fs-base,14px);font-weight:500;margin-bottom:8px;">💳 現在のプラン：${userPlan==='free'?'無料':userPlan==='standard'?'100円':'300円'}プラン</div>
+    <div style="font-size:var(--fs-label,11px);color:#888;line-height:1.7;">
+      無料：AI対決・投票・添削閲覧<br>
+      100円：添削に選ばれる権利・全アーカイブ<br>
+      300円：AI個別添削（月3回）
+    </div>
+    <button class="upgrade-btn" style="margin-top:8px;" onclick="setPlan('premium')">300円プランを試す（テスト）</button>`;
+  wrap.appendChild(planCard);
+
+  chat.appendChild(wrap);
+  chat.scrollTop = 0;
+};
+
+window.showHome = function() {
+  if(currentView === 'mypage') {
+    currentView = 'home';
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));
+    document.getElementById('nav-home').classList.add('on');
+    chat.innerHTML = '';
+    if(step === 'playing') {
+      modeSwitchBar.style.display = 'flex';
+      ibox.disabled = false; sbtn.disabled = false;
+      addMsg('bot', 'ホームに戻りました。続きを詠みましょう！');
+      updatePlaceholder();
+    } else {
+      start();
+    }
+  }
+};
 
 // ===== ユーティリティ =====
 function setPhase(n){for(let i=0;i<5;i++)document.getElementById('p'+i).classList.toggle('on',i===n);}
 function scroll(){setTimeout(()=>chat.scrollTop=chat.scrollHeight,80);}
 function now(){const d=new Date();return d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();}
 function addDiv(t){const d=document.createElement('div');d.className='divider';d.textContent=t;chat.appendChild(d);scroll();}
-
 function addMsg(who,html){
   const row=document.createElement('div');row.className='row '+who;
   const av=who==='bot'?'<div class="av-s">🌸</div>':'';
-  const nm=who==='bot'?`<div class="name-lbl">川柳ボット</div>`:'';
+  const nm=who==='bot'?'<div class="name-lbl">川柳ボット</div>':'';
   const dir=who==='me'?'flex-direction:row-reverse;':'';
-  row.innerHTML=`${av}<div>${nm}<div style="display:flex;align-items:flex-end;gap:4px;${dir}"><div class="bub">${html}</div><div class="ts">${now()}</div></div></div>`;
+  row.innerHTML=`${av}<div>${nm}<div style="display:flex;align-items:flex-end;gap:6px;${dir}"><div class="bub">${html}</div><div class="ts">${now()}</div></div></div>`;
   chat.appendChild(row);scroll();
   return row.querySelector('.bub');
 }
 function addTyping(){
   const row=document.createElement('div');row.className='row bot';row.id='typ';
-  row.innerHTML=`<div class="av-s">🌸</div><div><div class="name-lbl">川柳ボット</div><div style="display:flex;align-items:flex-end;gap:4px;"><div class="bub"><div class="typing-d"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div></div></div>`;
+  row.innerHTML=`<div class="av-s">🌸</div><div><div class="name-lbl">川柳ボット</div><div style="display:flex;align-items:flex-end;gap:6px;"><div class="bub"><div class="typing-d"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div></div></div></div>`;
   chat.appendChild(row);scroll();
 }
 function rmTyping(){const e=document.getElementById('typ');if(e)e.remove();}
 const dl=ms=>new Promise(r=>setTimeout(r,ms));
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 
-// ===== モード切替（常時） =====
-window.switchMode = function(mode){
+// ===== モード切替 =====
+window.switchMode=function(mode){
   if(step!=='playing')return;
-  currentMode=mode;
-  updateModeUI();
-  updatePlaceholder();
+  currentMode=mode;updateModeUI();updatePlaceholder();
 };
-window.toggleMode = function(){
+window.toggleMode=function(){
   if(step!=='playing')return;
   switchMode(currentMode==='senryu'?'dokurakugin':'senryu');
 };
-
 function updateModeUI(){
   const isS=currentMode==='senryu';
   document.getElementById('msw-s').className='msw-btn'+(isS?' on-s':'');
   document.getElementById('msw-d').className='msw-btn'+(isS?'':' on-d');
   document.getElementById('top-badge').textContent=isS?'川柳':'独楽吟';
 }
-
 function updatePlaceholder(){
   if(currentMode==='senryu'){
     hint.textContent=`「${topic?topic.w:''}」をテーマに川柳（五・七・五）を詠んで送信`;
     ibox.placeholder='例：春の風　桜ひらりと　舞い上がる';
     ibox.value='';
   }else{
-    hint.textContent='「たのしみは」の続きを入力して送信（〜とき は自動でつきます）';
+    hint.textContent='「たのしみは」の続きを入力（〜ときは自動でつきます）';
     ibox.placeholder='例：朝のコーヒー　一杯を　ひとり静かに　飲み干す';
     ibox.value='たのしみは　';
-    ibox.focus();
-    // カーソルを末尾へ
     setTimeout(()=>{ibox.selectionStart=ibox.selectionEnd=ibox.value.length;},50);
   }
 }
@@ -337,12 +440,9 @@ function updatePlaceholder(){
 // ===== Claude API =====
 async function callClaude(sys,usr,high=false){
   const model=high?'claude-sonnet-4-20250514':'claude-haiku-4-5-20251001';
-  const res=await fetch('https://senryu-app.itoshige.workers.dev',{
+  const res=await fetch(WORKER_URL,{
     method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-     
-    },
+    headers:{'Content-Type':'application/json'},
     body:JSON.stringify({model,max_tokens:1000,system:sys,messages:[{role:'user',content:usr}]})
   });
   const data=await res.json();
@@ -350,50 +450,63 @@ async function callClaude(sys,usr,high=false){
   return data.content[0].text;
 }
 
-// ===== ボット句生成（Haiku） =====
 async function generateBotSenryu(topicWord,userSenryu,mode){
   const isDoku=mode==='dokurakugin';
-  const fmt=isDoku
-    ?'「たのしみは〜とき」の五・七・五・七・七。必ず「たのしみは」で始め「とき」で終わる。\\nで区切る'
-    :'五・七・五の川柳。\\nで区切る';
+  const fmt=isDoku?'「たのしみは〜とき」五・七・五・七・七。必ず「たのしみは」で始め「とき」で終わる。\\nで区切る':'五・七・五の川柳。\\nで区切る';
   const sys=`川柳・独楽吟の達人。お題で3句作りJSONのみ返す。
 {"senryu":[{"text":"句（${fmt}）","persona":"40代","isAI":false},{"text":"...","persona":"大学生","isAI":false},{"text":"...","persona":"AI","isAI":true}]}
-ルール：必ず1句はisAI:trueでやや詩的に。残り2句はisAI:falseで人間らしく日常感を大切に。音数厳守。ユーザーの句と重複しない。JSONのみ。`;
+ルール：必ず1句はisAI:trueでやや詩的に。残り2句はisAI:falseで人間らしく。音数厳守。ユーザーの句と重複しない。JSONのみ。`;
   const usr=`お題：「${topicWord}」\nユーザーの句（重複禁止）：${userSenryu}`;
   const raw=await callClaude(sys,usr,false);
   return JSON.parse(raw.replace(/```json|```/g,'').trim());
 }
 
-// ===== 添削生成（Sonnet） =====
 async function generateCorrection(topicWord,senryu,mode,name){
   const isDoku=mode==='dokurakugin';
-  const sys=`あなたは川柳・独楽吟の選者歴30年のベテランです。投稿者に寄り添い「なるほど」と思わせる具体的な添削をしてください。
-【観点】${isDoku
-  ?'①五・七・五・七・七の音数は正確か ②「たのしみは〜とき」の形式が守られているか ③日常の小さな幸せが具体的に描かれているか ④「とき」で終わる余韻が心地よいか ⑤橘曙覧のように素朴で温かみがあるか'
-  :'①五・七・五の音数は正確か ②下五（結び）に余韻・驚き・笑いがあるか ③言葉の選び方に個性があるか ④「取り合わせ」が効いているか ⑤人間の本音・あるあるが出ているか'}
-【返答形式】JSONのみ：
-{"good":"良い点を具体的に（30字以内）","issue":"惜しい点を具体的に（30字以内）","revised":"改善案（原句と必ず違う表現・音数厳守・\\nで区切る）","reason":"なぜその改善が良いか（50字以内・師匠が弟子に語りかける温かい口調）"}
-【重要ルール】revisedは必ず原句と一字以上異なる表現にする。具体的な言葉の話をする。上から目線にならず温かく的確に。`;
+  const sys=`あなたは川柳・独楽吟の選者歴30年のベテランです。「なるほど」と思わせる具体的な添削をしてください。
+【観点】${isDoku?'①五・七・五・七・七の音数 ②たのしみは〜ときの形式 ③日常の小さな幸せの具体性 ④余韻':'①五・七・五の音数 ②下五の余韻と驚き ③言葉の個性 ④取り合わせの妙'}
+【返答】JSONのみ：{"good":"良い点（30字以内）","issue":"惜しい点（30字以内）","revised":"改善案（原句と必ず違う・音数厳守・\\nで区切る）","reason":"なぜ良いか（50字以内・師匠が弟子に語りかける口調）"}
+【重要】revisedは必ず原句と異なる表現。具体的な言葉の話をする。温かく的確に。`;
   const usr=`${name}さんの${isDoku?'独楽吟':'川柳'}（お題：「${topicWord}」）：\n${senryu}`;
   for(let i=0;i<2;i++){
     const raw=await callClaude(sys,usr,true);
     const result=JSON.parse(raw.replace(/```json|```/g,'').trim());
     if(result.revised.replace(/\n/g,'')!==senryu.replace(/\n/g,''))return result;
   }
-  throw new Error('添削生成に失敗しました');
+  throw new Error('添削生成失敗');
 }
 
-// ===== コメント返信生成 =====
 async function generateReply(topicWord,senryu,name){
-  const sys='川柳の読者。作者へのコメントを1〜2文で自然な日本語で。前置き不要。文章のみ。温かく具体的に。';
+  const sys='川柳の読者。作者へのコメントを1〜2文で自然な日本語で。前置き不要。温かく具体的に。';
   const usr=`${name}さんのお題「${topicWord}」の句：「${senryu.replace(/\n/g,'')}」へのコメントをください。`;
   try{return await callClaude(sys,usr,false);}
   catch{return REPLY_POOL[Math.floor(Math.random()*REPLY_POOL.length)];}
 }
 
-// ===== 起動：ペンネーム入力 =====
+// ===== 起動 =====
 async function start(){
+  currentView='home';
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));
+  document.getElementById('nav-home').classList.add('on');
+
+  // ローカルストレージから読み込み
+  loadUser();
+  const savedFS = localStorage.getItem('fs') || 'medium';
+  setFS(savedFS);
+
   setPhase(0);modeSwitchBar.style.display='none';
+
+  // 既存ユーザーの場合
+  if(userName && userAge){
+    document.getElementById('top-username').textContent=userName;
+    addTyping();await dl(800);rmTyping();
+    addMsg('bot',`おかえりなさい！${userName}さん🌸<br>今日も一緒に詠みましょう。`);
+    await dl(500);
+    await askMode();
+    return;
+  }
+
+  // 新規ユーザー
   addTyping();await dl(800);rmTyping();
   addMsg('bot','ようこそ！ひとくち文芸へ🌸<br>川柳と独楽吟を楽しむ場所です。<br><br>まずペンネームを教えてください。');
   hint.textContent='ペンネームを入力して送信';
@@ -402,7 +515,6 @@ async function start(){
   step='name';
 }
 
-// ===== 年代選択 =====
 async function askAge(){
   step='age';ibox.disabled=true;sbtn.disabled=true;
   addTyping();await dl(600);rmTyping();
@@ -413,66 +525,48 @@ async function askAge(){
 }
 
 window.selectAge=async function(age){
-  userAge=age;addMsg('me',age);await askMode();
+  userAge=age;addMsg('me',age);
+  saveUser();
+  await askMode();
 };
 
-// ===== モード選択 =====
 async function askMode(){
   step='mode';
   addTyping();await dl(600);rmTyping();
-  const b=addMsg('bot',`${userAge}なんですね！<br>今日はどちらの形式で詠みますか？`);
+  const b=addMsg('bot',`今日はどちらの形式で詠みますか？`);
   b.innerHTML+=`<div class="choice-row">
-    <button class="choice-btn mode-s" onclick="selectMode('senryu')">🖊 川柳<br><span style="font-size:10px;opacity:.9;">五・七・五</span></button>
-    <button class="choice-btn mode-d" onclick="selectMode('dokurakugin')">📜 独楽吟<br><span style="font-size:10px;opacity:.9;">たのしみは〜とき</span></button>
+    <button class="choice-btn mode-s" onclick="selectMode('senryu')">🖊 川柳<br><span style="font-size:var(--fs-label,11px);opacity:.9;">五・七・五</span></button>
+    <button class="choice-btn mode-d" onclick="selectMode('dokurakugin')">📜 独楽吟<br><span style="font-size:var(--fs-label,11px);opacity:.9;">たのしみは〜とき</span></button>
   </div>`;
   hint.textContent='詠み方をタップして選んでください';
 }
 
 window.selectMode=async function(mode){
   currentMode=mode;
-  const label=mode==='senryu'?'川柳で詠みます':'独楽吟で詠みます';
-  addMsg('me',label);
+  addMsg('me',mode==='senryu'?'川柳で詠みます':'独楽吟で詠みます');
   document.getElementById('top-username').textContent=userName;
   document.getElementById('top-badge').textContent=mode==='senryu'?'川柳':'独楽吟';
-  if(mode==='dokurakugin'){
-    await showDokurakuginIntro();
-  } else {
-    await startGame();
-  }
+  if(mode==='dokurakugin')await showDokurakuginIntro();
+  else await startGame();
 };
 
-// ===== 独楽吟の説明 =====
 async function showDokurakuginIntro(){
   addTyping();await dl(800);rmTyping();
   const b=addMsg('bot','');
   b.innerHTML=`<div class="dokurakugin-card">
     <div class="dokurakugin-title">📜 独楽吟とは？</div>
-    <div class="dokurakugin-body">
-      福井が生んだ幕末の歌人<strong>橘曙覧（たちばなあけみ）</strong>が考えた詩の形式です。<br><br>
-      日常の小さな幸せを「たのしみは〜とき」という形で詠みます。五・七・五・七・七の31音で構成される<strong>短歌</strong>の一種です。
-    </div>
+    <div class="dokurakugin-body">福井が生んだ幕末の歌人<strong>橘曙覧（たちばなあけみ）</strong>が考えた詩の形式です。<br><br>日常の小さな幸せを「たのしみは〜とき」の形で詠みます。五・七・五・七・七の31音の短歌です。</div>
     <div class="dokurakugin-example">たのしみは　朝おきいでて　昨日まで<br>無かりし花の　咲ける見る時</div>
-    <div class="dokurakugin-format">
-      形式：<strong>たのしみは〜（五・七・五・七・七）〜とき</strong><br>
-      ※「たのしみは」と「とき」は自動で補完されます<br>
-      ※クリントン大統領がスピーチで引用した福井の文化遺産です
-    </div>
+    <div class="dokurakugin-format">形式：<strong>たのしみは〜（五・七・五・七・七）〜とき</strong><br>※「たのしみは」は入力済み・「とき」は自動補完<br>※クリントン大統領がスピーチで引用した福井の文化遺産</div>
   </div>`;
-  await dl(600);
-  addMsg('bot','では今日のお題を発表します！');
-  await dl(500);
-  await startGame();
+  await dl(500);addMsg('bot','では今日のお題を発表します！');
+  await dl(400);await startGame();
 }
 
-// ===== ゲーム開始 =====
 async function startGame(){
-  step='playing';
-  topic=TOPICS[Math.floor(Math.random()*TOPICS.length)];
-  voted=false;entries=[];
-  setPhase(1);
-  modeSwitchBar.style.display='flex';
-  updateModeUI();
-
+  step='playing';topic=TOPICS[Math.floor(Math.random()*TOPICS.length)];
+  voted=false;entries=[];setPhase(1);
+  modeSwitchBar.style.display='flex';updateModeUI();
   addTyping();await dl(700);rmTyping();
   const b=addMsg('bot','');
   b.innerHTML=`今日のお題を発表します！<div class="topic-card">
@@ -481,46 +575,37 @@ async function startGame(){
     <div class="topic-sub">${topic.d}</div>
   </div>`;
   await dl(400);
-  const modeDesc=currentMode==='senryu'
-    ?'五・七・五の<strong>川柳</strong>'
-    :'「たのしみは〜とき」の<strong>独楽吟</strong>（「たのしみは」は入力済みです）';
-  addMsg('bot',`「${topic.w}」をテーマに${modeDesc}を詠んでください。<br><span style="font-size:11px;color:#888;">投稿後に対戦相手を探します。上のボタンでモードをいつでも変えられます。</span>`);
-  updatePlaceholder();
-  ibox.disabled=false;sbtn.disabled=false;ibox.focus();
+  const modeDesc=currentMode==='senryu'?'五・七・五の<strong>川柳</strong>':'「たのしみは〜とき」の<strong>独楽吟</strong>（「たのしみは」は入力済みです）';
+  addMsg('bot',`「${topic.w}」をテーマに${modeDesc}を詠んでください。<br><span style="font-size:var(--fs-label,11px);color:#888;">上のボタンでモードをいつでも変えられます。</span>`);
+  updatePlaceholder();ibox.disabled=false;sbtn.disabled=false;ibox.focus();
 }
 
-// ===== 投稿処理 =====
 async function handleSend(){
   if(step==='name'){
-    const txt=ibox.value.trim();
-    if(!txt)return;
+    const txt=ibox.value.trim();if(!txt)return;
     userName=txt;ibox.value='';sbtn.disabled=true;ibox.disabled=true;
     addMsg('me',userName);await askAge();return;
   }
   if(step!=='playing')return;
-  let txt=ibox.value.trim();
-  if(!txt||sbtn.disabled)return;
-
-  // 独楽吟の場合：「たのしみは」が先頭にない場合は補完、「とき」が末尾にない場合も補完
+  let txt=ibox.value.trim();if(!txt||sbtn.disabled)return;
   if(currentMode==='dokurakugin'){
     if(!txt.startsWith('たのしみは'))txt='たのしみは　'+txt;
     if(!txt.endsWith('とき')&&!txt.endsWith('時'))txt=txt+'　とき';
   }
-
   userS=txt;ibox.value='';sbtn.disabled=true;ibox.disabled=true;
   addMsg('me',txt.replace(/\n/g,'<br>'));
+  // マイページに記録
+  saveRecord(txt, topic.w, currentMode);
   setPhase(2);await matching();
 }
 
-// ===== マッチング演出 =====
 async function matching(){
   hint.textContent='対戦相手を探しています…';
   addTyping();await dl(500);rmTyping();
-  const matchBub=addMsg('bot','');matchBub.style.maxWidth='90%';
+  const matchBub=addMsg('bot','');matchBub.style.maxWidth='92%';
   const humanCount=Math.floor(Math.random()*2);
   const aiCount=3-humanCount;
-  let foundUsers=[];
-  const shuffled=shuffle([...DUMMY_USERS]);
+  let foundUsers=[];const shuffled=shuffle([...DUMMY_USERS]);
   let sec=30;
   matchBub.innerHTML=`<div class="matching-card">
     <div class="matching-title">対戦相手を探しています</div>
@@ -528,40 +613,28 @@ async function matching(){
     <div class="matching-timer" id="mt">待機中… ${sec}秒</div>
     <div class="matching-members" id="mm"></div>
   </div>`;scroll();
-
   for(let i=0;i<8;i++){
     await dl(600);sec-=Math.floor(Math.random()*3)+2;
-    const te=document.getElementById('mt');
-    const me=document.getElementById('mm');
+    const te=document.getElementById('mt');const me=document.getElementById('mm');
     if(te)te.textContent=`待機中… ${Math.max(sec,0)}秒`;
-    if(i<humanCount&&me){
-      foundUsers.push(shuffled[i]);
-      me.innerHTML=foundUsers.map(u=>`<span class="member-chip">👤 ${u.name}さん（${u.age}）が参加</span>`).join('');
-    }
+    if(i<humanCount&&me){foundUsers.push(shuffled[i]);me.innerHTML=foundUsers.map(u=>`<span class="member-chip">👤 ${u.name}さん（${u.age}）が参加</span>`).join('');}
     if(sec<=0)break;
   }
   await dl(300);
-
   let msg='';
   if(humanCount===0)msg='今回は相手が見つかりませんでした。AIが3人で対戦します！';
   else if(humanCount===1)msg=`${foundUsers[0].name}さんが参加！残り${aiCount}人はAIが担当します。`;
   else msg=`${foundUsers.map(u=>u.name+'さん').join('と')}が参加！残り${aiCount}人はAIが担当します。`;
-
   matchBub.innerHTML=`<div class="matching-card">
     <div class="matching-title">✅ ${msg}</div>
-    <div class="matching-members">
-      ${foundUsers.map(u=>`<span class="member-chip">👤 ${u.name}さん（${u.age}）</span>`).join('')}
-      ${Array(aiCount).fill('<span class="member-chip" style="background:#F3E5F5;color:#4A148C;">🤖 AI</span>').join('')}
-    </div>
+    <div class="matching-members">${foundUsers.map(u=>`<span class="member-chip">👤 ${u.name}さん（${u.age}）</span>`).join('')}${Array(aiCount).fill('<span class="member-chip" style="background:#F3E5F5;color:#4A148C;">🤖 AI</span>').join('')}</div>
   </div>`;scroll();
-
   await dl(700);await askEvalMode(foundUsers,aiCount);
 }
 
-// ===== 評価方法の選択 =====
 async function askEvalMode(foundUsers,aiCount){
   addTyping();await dl(500);rmTyping();
-  const b=addMsg('bot','');b.style.maxWidth='92%';
+  const b=addMsg('bot','');b.style.maxWidth='94%';
   b.innerHTML=`<div class="eval-choice-card">
     <div class="eval-choice-title">評価方法を選んでください</div>
     <div class="eval-choice-row">
@@ -576,23 +649,20 @@ async function askEvalMode(foundUsers,aiCount){
         <div class="eval-btn-desc">24時間後に<br>通知で結果が届く</div>
       </div>
     </div>
-    <div style="text-align:center;margin-top:8px;">
-      <button onclick="confirmEvalMode('${JSON.stringify(foundUsers).replace(/'/g,'').replace(/"/g,'&quot;')}',${aiCount})" style="padding:6px 20px;border-radius:20px;border:none;background:#4CAF50;color:#fff;font-size:12px;font-family:'Noto Sans JP',sans-serif;cursor:pointer;opacity:.5;" id="eval-confirm-btn">決定</button>
+    <div style="text-align:center;margin-top:10px;">
+      <button onclick="confirmEvalMode()" style="padding:10px 24px;border-radius:24px;border:none;background:#4CAF50;color:#fff;font-size:var(--fs-btn,13px);font-family:'Noto Sans JP',sans-serif;cursor:pointer;opacity:.5;" id="eval-confirm-btn">決定</button>
     </div>
   </div>`;
   hint.textContent='評価方法を選んでから決定を押してください';
-  // foundUsersとaiCountを保存
-  window._pendingFoundUsers=foundUsers;
-  window._pendingAiCount=aiCount;
+  window._pendingFoundUsers=foundUsers;window._pendingAiCount=aiCount;
 }
 
-window.selectEvalMode=function(mode,el){
+window.selectEvalMode=function(mode){
   evalMode=mode;
   document.getElementById('eb-ai').classList.toggle('selected',mode==='ai');
   document.getElementById('eb-human').classList.toggle('selected',mode==='human');
   document.getElementById('eval-confirm-btn').style.opacity='1';
 };
-
 window.confirmEvalMode=async function(){
   const foundUsers=window._pendingFoundUsers||[];
   const aiCount=window._pendingAiCount||3;
@@ -601,19 +671,12 @@ window.confirmEvalMode=async function(){
   await generateEntries(foundUsers,aiCount);
 };
 
-// ===== エントリー生成 =====
 async function generateEntries(foundUsers,aiCount){
   hint.textContent='みんなの句を生成中…';addTyping();
   let botData;
-  try{
-    botData=await generateBotSenryu(topic.w,userS,currentMode);
-  }catch(e){
-    rmTyping();
-    addMsg('bot',`<span style="color:#E53935;">⚠️ APIエラー：${e.message}</span><br>APIキーを確認してください。`);
-    sbtn.disabled=false;ibox.disabled=false;return;
-  }
+  try{botData=await generateBotSenryu(topic.w,userS,currentMode);}
+  catch(e){rmTyping();addMsg('bot',`<span style="color:#E53935;">⚠️ APIエラー：${e.message}</span>`);sbtn.disabled=false;ibox.disabled=false;return;}
   rmTyping();
-
   const rawEntries=[{text:userS,isAI:false,label:userName,isUser:true}];
   const nonAI=botData.senryu.filter(s=>!s.isAI);
   const aiS=botData.senryu.find(s=>s.isAI)||botData.senryu[botData.senryu.length-1];
@@ -622,17 +685,15 @@ async function generateEntries(foundUsers,aiCount){
     const s=i===0?aiS:(nonAI[i+foundUsers.length]||nonAI[0]);
     rawEntries.push({text:s.text,isAI:i===0,label:i===0?'AI':DUMMY_USERS[i+foundUsers.length]?.name||'詠み人',isUser:false});
   }
-  entries=shuffle(rawEntries.slice(0,4));
-  aiIdx=entries.findIndex(e=>e.isAI);
+  entries=shuffle(rawEntries.slice(0,4));aiIdx=entries.findIndex(e=>e.isAI);
   await showVoteUI();
 }
 
-// ===== 投票UI =====
 async function showVoteUI(){
   setPhase(3);
-  addMsg('bot',`4句が揃いました！<br><span style="font-weight:500;color:#4CAF50;">一番好きな句をタップ</span>してください。<br><span style="font-size:11px;color:#888;">どれがAIか、投票後に発表します。</span>`);
+  addMsg('bot',`4句が揃いました！<br><span style="font-weight:500;color:#4CAF50;">一番好きな句をタップ</span>してください。<br><span style="font-size:var(--fs-label,11px);color:#888;">どれがAIか、投票後に発表します。<br>※対戦結果はこの画面の参加者のみに表示されます。</span>`);
   await dl(200);
-  const wrapBub=addMsg('bot','');wrapBub.style.maxWidth='94%';
+  const wrapBub=addMsg('bot','');wrapBub.style.maxWidth='96%';
   let html='<div class="four-wrap">';
   entries.forEach((e,i)=>{
     html+=`<div class="entry-card" id="ec${i}" onclick="castVote(${i})">
@@ -645,15 +706,11 @@ async function showVoteUI(){
   hint.textContent='好きな句を一つタップしてください';
 }
 
-// ===== 投票処理 =====
 window.castVote=async function(i){
   if(voted)return;voted=true;
   entries.forEach((_,j)=>{const c=document.getElementById('ec'+j);if(c)c.onclick=null;});
   const chosen=document.getElementById('ec'+i);if(chosen)chosen.classList.add('voted-best');
-  hint.textContent='集計しています…';
-  setPhase(4);await dl(600);
-
-  // AI公開
+  hint.textContent='集計しています…';setPhase(4);await dl(600);
   await dl(700);
   entries.forEach((e,j)=>{
     const c=document.getElementById('ec'+j);if(!c)return;
@@ -663,105 +720,62 @@ window.castVote=async function(i){
     else{c.classList.add('reveal-human');badge.style.cssText='background:#1565C0;color:#fff;';badge.textContent=`👤 ${e.label}`;}
     c.appendChild(badge);
   });scroll();
-
   await dl(500);
-
-  if(evalMode==='human'){
-    await showHumanEvalResult(i);
-  }else{
-    await showAIResult(i);
-  }
+  if(evalMode==='human')await showHumanEvalResult(i);
+  else await showAIResult(i);
 };
 
-// ===== AI評価の結果表示 =====
 async function showAIResult(bestIdx){
   addTyping();await dl(1000);rmTyping();
   const bestEntry=entries[bestIdx];
-  // AI擬似投票（ランダム）
   const votes=entries.map((_,i)=>i===bestIdx?Math.floor(Math.random()*8)+6:Math.floor(Math.random()*4)+1);
   const total=votes.reduce((a,b)=>a+b,0);
-
-  const rb=addMsg('bot','');rb.style.maxWidth='94%';
+  const rb=addMsg('bot','');rb.style.maxWidth='96%';
   let html=`<div class="result-card">
-    <div class="result-title">📊 AIによる集計結果（${total}票）</div>`;
+    <div class="result-title">📊 AIによる集計（${total}票）※この対戦の参加者のみ表示</div>`;
   entries.forEach((e,i)=>{
     const pct=Math.round(votes[i]/total*100);
     const name=e.isAI?'🤖 AI':(e.isUser?`👤 ${userName}`:`👤 ${e.label}`);
-    html+=`<div class="result-row">
-      <div class="result-name">${name}</div>
-      <div class="result-bar-bg"><div class="result-bar-fill" id="rf${i}" style="width:0%;${i===bestIdx?'background:#F57F17;':''}"></div></div>
-      <div class="result-pct">${pct}%</div>
-    </div>`;
+    html+=`<div class="result-row"><div class="result-name">${name}</div><div class="result-bar-bg"><div class="result-bar-fill" id="rf${i}" style="width:0%;${i===bestIdx?'background:#F57F17;':''}"></div></div><div class="result-pct">${pct}%</div></div>`;
   });
   html+=`<div class="winner-badge">⭐ ベスト：${bestEntry.isAI?'🤖 AI':(bestEntry.isUser?userName:bestEntry.label)}の句</div>`;
-  html+=`<div class="ai-reveal">${bestIdx===aiIdx?'🎯 正解！AIを見破っていました！':'😄 実は【'+(aiIdx+1)+'】がAIの句でした！'}</div>`;
-  html+=`</div>`;rb.innerHTML=html;
+  html+=`<div class="ai-reveal">${bestIdx===aiIdx?'🎯 正解！AIを見破っていました！':'😄 実は【'+(aiIdx+1)+'】がAIの句でした！'}</div></div>`;
+  rb.innerHTML=html;
   setTimeout(()=>{entries.forEach((_,i)=>{const pct=Math.round(votes[i]/total*100);const el=document.getElementById('rf'+i);if(el)el.style.width=pct+'%';});},100);
-
   await dl(700);await showCorrection();
 }
 
-// ===== 人間評価の結果表示 =====
 async function showHumanEvalResult(bestIdx){
   addTyping();await dl(800);rmTyping();
-  const rb=addMsg('bot','');rb.style.maxWidth='94%';
-  // 人間評価は24時間後という演出
+  const rb=addMsg('bot','');rb.style.maxWidth='96%';
   const voteCount=Math.floor(Math.random()*8)+3;
   rb.innerHTML=`<div class="human-eval-card">
     <div class="human-eval-title">👥 みんなの評価を受付中</div>
     <div class="human-eval-count">${voteCount}票</div>
-    <div class="human-eval-sub">現在集計中… 24時間後に通知で結果が届きます</div>
-    <div class="human-eval-body" style="margin-top:8px;">
-      あなたの投票を受け付けました。<br>
-      他の参加者の評価が集まり次第、通知でお知らせします。<br>
-      <span style="font-size:10px;color:#42A5F5;">※ 実装後はFirebaseで本物の投票を集計します</span>
-    </div>
+    <div style="font-size:var(--fs-label,11px);color:#42A5F5;text-align:center;margin-bottom:8px;">現在集計中… 24時間後に通知で結果が届きます</div>
+    <div class="human-eval-body">あなたの投票を受け付けました。<br>※本番はFirebaseで実際の投票を集計します。<br>※対戦結果は参加した方のみに表示されます。</div>
   </div>`;scroll();
-
   await dl(600);
-  addMsg('bot',`${aiIdx===bestIdx?'🎯 ちなみに【'+(aiIdx+1)+'】がAIの句でした！お見事！':'😄 ちなみに【'+(aiIdx+1)+'】がAIの句でした。どうでしたか？'}`);
+  addMsg('bot',`${aiIdx===bestIdx?'🎯 ちなみに【'+(aiIdx+1)+'】がAIの句でした！':'😄 ちなみに【'+(aiIdx+1)+'】がAIの句でした。'}`);
   await dl(500);await showCorrection();
 }
 
-// ===== 添削表示 =====
 async function showCorrection(){
-  // プランによって表示を変える
-  if(userPlan==='free'){
-    await showNoCorrectionMessage();
-    return;
-  }
-
-  // 今日の3句添削（全員公開）の表示
-  addDiv('✏️ 今日の添削（全員公開）');
-  addTyping();
+  if(userPlan==='free'){await showNoCorrectionMessage();return;}
+  addDiv('✏️ 今日の添削（全員公開）');addTyping();
   hint.textContent='Sonnet AIが添削を生成中…';
-
   let correction;
-  try{
-    correction=await generateCorrection(topic.w,userS,currentMode,userName);
-  }catch(e){
-    rmTyping();
-    // フォールバック
-    correction={
-      good:'独自の視点が光っています',
-      issue:'下五にもう少し余韻がほしいところです',
-      revised:userS+'（改善案を生成できませんでした）',
-      reason:'言葉を一つ変えるだけで情景が広がります'
-    };
-  }
+  try{correction=await generateCorrection(topic.w,userS,currentMode,userName);}
+  catch(e){rmTyping();correction={good:'独自の視点が光っています',issue:'下五にもう少し余韻がほしいところです',revised:userS,reason:'言葉を一つ変えるだけで情景が広がります'};}
   rmTyping();
-
   const award=AWARDS[Math.floor(Math.random()*AWARDS.length)];
-  const corrBub=addMsg('bot','');corrBub.style.maxWidth='94%';
+  const corrBub=addMsg('bot','');corrBub.style.maxWidth='96%';
   corrBub.innerHTML=`<div class="correction-wrap">
-    <div class="correction-header">✏️ ${userName}さんの句への添削</div>
+    <div class="correction-header">✏️ ${userName}さんの句への添削（全員が読めます）</div>
     <div class="correction-body">
       <div class="correction-badge" style="background:#FFF9E6;color:#854F0B;">${award}</div>
-      <div style="margin-bottom:8px;">
-        <div style="font-size:9px;color:#888;margin-bottom:3px;">あなたの句</div>
-        <div class="correction-orig">${userS.replace(/\n/g,'<br>')}</div>
-      </div>
-      <div style="margin-bottom:6px;">
+      <div style="margin-bottom:9px;"><div style="font-size:var(--fs-label,11px);color:#888;margin-bottom:4px;">あなたの句</div><div class="correction-orig">${userS.replace(/\n/g,'<br>')}</div></div>
+      <div style="margin-bottom:7px;">
         <div class="correction-point"><div class="correction-dot" style="background:#1D9E75;"></div><div><span style="color:#1D9E75;font-weight:500;">良い点：</span>${correction.good}</div></div>
         <div class="correction-point"><div class="correction-dot" style="background:#E53935;"></div><div><span style="color:#E53935;font-weight:500;">惜しい点：</span>${correction.issue}</div></div>
       </div>
@@ -771,98 +785,68 @@ async function showCorrection(){
       <div class="correction-react">
         <button class="react-btn" onclick="this.textContent='なるほど！✓';this.style.background='#E1F5EE';this.style.color='#0F6E56';">なるほど！</button>
         <button class="react-btn" onclick="this.textContent='試してみる✓';this.style.background='#E1F5EE';this.style.color='#0F6E56';">試してみる</button>
-        <button class="react-btn" onclick="this.textContent='勉強になった✓';this.style.background='#E1F5EE';this.style.color='#0F6E56';">勉強になった</button>
         <button class="react-btn primary" onclick="showCommentBox()">コメントする</button>
       </div>
     </div>
   </div>`;scroll();
-
   hint.textContent='添削を読んで次の句を詠みましょう';
   await dl(500);showNextButtons();
 }
 
-// ===== 添削なし（無料プラン）の案内 =====
 async function showNoCorrectionMessage(){
   addTyping();await dl(600);rmTyping();
-  const b=addMsg('bot','');b.style.maxWidth='92%';
+  const b=addMsg('bot','');b.style.maxWidth='94%';
   b.innerHTML=`<div class="no-correction-card">
     <div class="no-correction-title">✏️ 添削について</div>
-    <div class="no-correction-body">
-      無料プランでは毎日公開される<strong>今日の添削3句</strong>を閲覧できます。<br><br>
-      <strong>100円プラン</strong>：添削に選ばれる権利＋全アーカイブ閲覧<br>
-      <strong>300円プラン</strong>：自分の句をAIが個別添削（月3回）
-    </div>
-    <button class="upgrade-btn" onclick="showUpgradeSimulation()">プランを見る</button>
+    <div class="no-correction-body">無料プランでは毎日公開される<strong>今日の添削3句</strong>を閲覧できます。<br><br><strong>100円プラン</strong>：添削に選ばれる権利＋全アーカイブ<br><strong>300円プラン</strong>：自分の句をAIが個別添削（月3回）</div>
+    <button class="upgrade-btn" onclick="setPlan('premium')">300円プランを試す（テスト用）</button>
   </div>`;scroll();
   await dl(300);showNextButtons();
 }
 
-window.showUpgradeSimulation=function(){
-  addMsg('bot','課金プランへのアップグレードは近日実装予定です。<br>Stripeで安全に決済できるようになります。<br><br>テスト用：<br><button class="react-btn primary" onclick="setPlan(\'standard\')">100円プランを試す</button> <button class="react-btn primary" onclick="setPlan(\'premium\')" style="background:#854F0B;border-color:#854F0B;">300円プランを試す</button>');
-  scroll();
-};
-
 window.setPlan=function(plan){
-  userPlan=plan;
-  addMsg('me',plan==='standard'?'100円プランにします':'300円プランにします');
-  addMsg('bot',`${plan==='standard'?'100円':'300円'}プランに設定しました！次の句から添削が受けられます。`);
+  userPlan=plan;saveUser();
+  addMsg('bot','プランを設定しました！次の句から添削が受けられます。');
 };
 
-// ===== 次のボタン =====
 function showNextButtons(){
-  const eb=addMsg('bot',`${userName}さん、お疲れ様でした🌸`);
-  eb.innerHTML+=`<br><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
+  const eb=addMsg('bot',`${userName}さん、お疲れ様でした🌸<br><span style="font-size:var(--fs-label,11px);color:#888;">投稿した句はマイページで確認できます。</span>`);
+  eb.innerHTML+=`<br><div style="display:flex;gap:7px;margin-top:9px;flex-wrap:wrap;">
     <button class="nbtn" onclick="window._nextTopic()">次のお題へ ▶</button>
     <button class="nbtn" style="background:#795548;" onclick="window._changeMode()">詠み方を変える</button>
   </div>`;
   hint.textContent='次のお題へ進みましょう';
 }
 
-// ===== コメントボックス =====
 window.showCommentBox=function(){
-  const cb=addMsg('bot','');cb.style.maxWidth='92%';
+  const cb=addMsg('bot','');cb.style.maxWidth='94%';
   cb.innerHTML=`<div class="comment-box">
-    <div class="comment-label">💬 気になった句の作者へコメント</div>
+    <div class="comment-label">💬 気になった句の作者へコメント<br><span style="font-size:var(--fs-label,11px);color:#F57F17;">※現在はあなたの画面にのみ表示されます。本番はFirebase連携で全員に届きます。</span></div>
     <textarea class="comment-area" id="cmt" placeholder="例：情景が目に浮かびました！また詠んでください。"></textarea>
     <button class="comment-send" onclick="sendComment()">送る</button>
   </div>`;scroll();
 };
 
 window.sendComment=async function(){
-  const cmt=document.getElementById('cmt');
-  if(!cmt||!cmt.value.trim())return;
-  const txt=cmt.value.trim();
-  cmt.disabled=true;
-  const sendBtns=document.querySelectorAll('.comment-send');
-  sendBtns.forEach(b=>b.disabled=true);
-  addMsg('me',`💬 ${txt}`);
-  addTyping();
+  const cmt=document.getElementById('cmt');if(!cmt||!cmt.value.trim())return;
+  const txt=cmt.value.trim();cmt.disabled=true;
+  document.querySelectorAll('.comment-send').forEach(b=>b.disabled=true);
+  addMsg('me',`💬 ${txt}`);addTyping();
   const reply=await generateReply(topic.w,userS,userName);
   rmTyping();
-  addMsg('bot','コメントを届けました📨<br>あなたの句にもコメントが届いています！');
+  addMsg('bot','コメントを届けました📨');
   await dl(400);addDiv('✉️ あなたの句へのコメント');
-  const rb=addMsg('bot','');rb.style.maxWidth='90%';
-  rb.innerHTML=`<div class="reply-card">
-    <div class="reply-title">👤 参加者より</div>
-    <div class="reply-msg">「${userS.replace(/\n/g,'')}」<br><br>${reply}</div>
-  </div>`;scroll();
+  const rb=addMsg('bot','');rb.style.maxWidth='92%';
+  rb.innerHTML=`<div class="reply-card"><div class="reply-title">👤 参加者より</div><div class="reply-msg">「${userS.replace(/\n/g,'')}」<br><br>${reply}</div></div>`;scroll();
 };
 
-// ===== 次のお題・モード変更 =====
-window._nextTopic=async function(){
-  chat.innerHTML='';ibox.disabled=true;sbtn.disabled=true;
-  voted=false;entries=[];await startGame();
-};
-window._changeMode=async function(){
-  chat.innerHTML='';ibox.disabled=true;sbtn.disabled=true;
-  voted=false;entries=[];modeSwitchBar.style.display='none';await askMode();
-};
+window._nextTopic=async function(){chat.innerHTML='';ibox.disabled=true;sbtn.disabled=true;voted=false;entries=[];await startGame();};
+window._changeMode=async function(){chat.innerHTML='';ibox.disabled=true;sbtn.disabled=true;voted=false;entries=[];modeSwitchBar.style.display='none';await askMode();};
 
-// ===== イベント =====
 sbtn.addEventListener('click',handleSend);
 ibox.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleSend();}});
 
-// ===== 起動 =====
+// 起動
 start();
 </script>
 </body>
